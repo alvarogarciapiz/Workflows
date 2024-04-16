@@ -7,6 +7,10 @@ on:
         type: string
         description: 'The folder where the build is located'
         default: '.'
+    secrets:
+      GITHUB_TOKEN:
+        description: 'The GitHub token to use for deployment'
+        required: true
 
 jobs:
   react-pages:
@@ -29,3 +33,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ${{ inputs.BUILD_FOLDER }}
+          token: ${{ secrets.GITHUB_TOKEN }}
