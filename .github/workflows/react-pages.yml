@@ -3,7 +3,7 @@ on:
   workflow_call:
 
 jobs:
-  validate-build:
+  react-pages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
