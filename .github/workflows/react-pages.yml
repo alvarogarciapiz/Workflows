@@ -35,7 +35,7 @@ jobs:
           npm run build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          folder: ${{ inputs.BUILD_FOLDER }}
-          token: ${{ secrets.GH_TOKEN }}
+          publish_dir: ${{ inputs.BUILD_FOLDER }}
+          github_token: ${{ secrets.GH_TOKEN }}
