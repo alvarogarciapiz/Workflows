@@ -4,6 +4,7 @@ on:
     inputs:
       BUILD_FOLDER:
         required: false
+        type: string
         description: 'The folder where the build is located'
         default: ''
 
