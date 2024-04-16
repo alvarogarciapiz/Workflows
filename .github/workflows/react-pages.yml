@@ -1,6 +1,11 @@
 name: react-pages
 on:
   workflow_call:
+    inputs:
+      BUILD_FOLDER:
+        required: false
+        description: 'The folder where the build is located'
+        default: ''
 
 jobs:
   react-pages:
@@ -22,4 +27,4 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
+          folder: ${{ inputs.BUILD_FOLDER }}
