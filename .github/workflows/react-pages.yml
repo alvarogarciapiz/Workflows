@@ -1,0 +1,25 @@
+name: react-pages
+on:
+  workflow_call:
+
+jobs:
+  validate-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies 📦
+        shell: bash
+        run: | 
+          npm install
+
+      - name: Build 🏗
+        shell: bash
+        run: | 
+          npm run build
+      
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
