@@ -97,6 +97,9 @@ jobs:
 
       - name: debug
         run: ls -la
+      
+      - name: debug2
+        run: echo ${{ steps.compress-win.outputs.FILE_PATH }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
