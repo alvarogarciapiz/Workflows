@@ -70,7 +70,7 @@ jobs:
         run: npm run package
       
       - name: Stash artifact
-        uses: actions/upload.artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: dockerboard-win32-x64
           path: "./dockerboard-win32-x64"
@@ -82,7 +82,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dockerboard-win32-x64
-          
+
       - name: compress artifact
         id: compress
         uses: alvarogarciapiz/Actions/compress-files@main
