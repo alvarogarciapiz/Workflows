@@ -3,9 +3,14 @@ on:
   workflow_call:
     inputs:
       VERSION:
-        required: true
+        required: false
         type: string
         description: 'Application version'
+        default: ${{ github.event.release.tag_name }}
+    secrets:
+      GH_TOKEN:
+        description: "Github Token"
+        required: true
 
 jobs:
   build:
@@ -35,10 +40,20 @@ jobs:
       - name: List dist contents
         run: ls -R dist
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+      - name: compress artifact
+        id: compress
+        uses: alvarogarciapiz/actions/compress-files@main
         with:
-          name: dockerboard-${{ inputs.VERSION }}-${{ matrix.os }}
-          path: |
-            ./dist/dockerboard-darwin-arm64/dockerboard.app
-            ./dist/dockerboard-win32-x64/dockerboard.exe
+          ORIGIN_PATH: "./dockerboard-darwin-arm64" #dockerboard-win32-x64
+          NAME: "dockerboard_app_macOS_${{ inputs.VERSION }}"
+          COMPRESSION: "zip"
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.compress.outputs.FILE_PATH }}
+          asset_name: dockerboards.app
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
