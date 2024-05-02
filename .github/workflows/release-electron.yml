@@ -13,20 +13,15 @@ on:
         required: true
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest]
-        node-version: [21.x]
-
+  build-mac:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 21.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 21.x
 
       - name: Install dependencies
         run: npm ci
@@ -37,21 +32,50 @@ jobs:
       - name: Package Application
         run: npm run package
 
-      - name: DEBUG
-        run: echo ${{ github.event.release.upload_url }}
+      - name: compress artifact
+        id: compress
+        uses: alvarogarciapiz/Actions/compress-files@main
+        with:
+          ORIGIN_PATH: "./dockerboard-darwin-arm64"
+          NAME: "dockerboard_app_macOS_${{ inputs.VERSION }}"
+          COMPRESSION: "zip"
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.compress.outputs.FILE_PATH }}
+          asset_name: dockerboards.zip
+          asset_content_type: application/zip
+  
+  build-win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Package Application
+        run: npm run package
 
       - name: compress artifact
         id: compress
         uses: alvarogarciapiz/Actions/compress-files@main
         with:
-          ORIGIN_PATH: "./dockerboard-darwin-arm64" #dockerboard-win32-x64
+          ORIGIN_PATH: "./dockerboard-win32-x64"
           NAME: "dockerboard_app_macOS_${{ inputs.VERSION }}"
           COMPRESSION: "zip"
-
-      - name: DEBUG
-        run: |
-          echo ${{ steps.compress.outputs.FILE_PATH }}
-          echo ${{ steps.compress.outputs.FILE_NAME }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
