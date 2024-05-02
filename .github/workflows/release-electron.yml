@@ -6,10 +6,6 @@ on:
         required: true
         type: string
         description: 'Application version'
-    secrets:
-      GH_TOKEN:
-        description: 'The GitHub token to use for deployment'
-        required: true
 
 jobs:
   build:
