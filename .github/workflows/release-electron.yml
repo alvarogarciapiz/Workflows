@@ -42,7 +42,7 @@ jobs:
 
       - name: compress artifact
         id: compress
-        uses: alvarogarciapiz/actions/compress-files@main
+        uses: alvarogarciapiz/Actions/compress-files@main
         with:
           ORIGIN_PATH: "./dockerboard-darwin-arm64" #dockerboard-win32-x64
           NAME: "dockerboard_app_macOS_${{ inputs.VERSION }}"
