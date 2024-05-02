@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, macos-latest]
         node-version: [21.x]
 
     steps:
@@ -40,6 +40,5 @@ jobs:
         with:
           name: dockerboard-${{ inputs.VERSION }}-${{ matrix.os }}
           path: |
-            ./dist/**/*.exe
-            ./dist/**/*.deb
-            ./dist/**/*.dmg
+            ./dist/dockerboard-darwin-arm64/dockerboard.app
+            ./dist/dockerboard-win32-x64/dockerboard.exe
