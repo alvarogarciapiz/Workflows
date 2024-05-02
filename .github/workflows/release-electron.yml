@@ -37,8 +37,8 @@ jobs:
       - name: Package Application
         run: npm run package
 
-      - name: List dist contents
-        run: ls -R dist
+      - name: DEBUG
+        run: echo ${{ github.event.release.upload_url }}
 
       - name: compress artifact
         id: compress
