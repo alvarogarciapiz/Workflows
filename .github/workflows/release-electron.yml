@@ -40,6 +40,6 @@ jobs:
         with:
           name: dockerboard-${{ inputs.VERSION }}-${{ matrix.os }}
           path: |
-            ./dist/*.exe
-            ./dist/*.deb
-            ./dist/*.dmg
+            ./dist/**/*.exe
+            ./dist/**/*.deb
+            ./dist/**/*.dmg
