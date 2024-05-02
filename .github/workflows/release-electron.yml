@@ -88,12 +88,15 @@ jobs:
         run: ls -la
 
       - name: compress artifact
-        id: compress
+        id: compress-win
         uses: alvarogarciapiz/Actions/compress-files@main
         with:
           ORIGIN_PATH: "."
           NAME: "dockerboard_app_win_${{ inputs.VERSION }}"
           COMPRESSION: "zip"
+
+      - name: debug
+        run: ls -la
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
@@ -101,6 +104,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.compress.outputs.FILE_PATH }}
+          asset_path: ${{ steps.compress-win.outputs.FILE_PATH }}
           asset_name: dockerboard.zip
           asset_content_type: application/zip
