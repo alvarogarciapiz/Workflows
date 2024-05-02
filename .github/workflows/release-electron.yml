@@ -50,7 +50,7 @@ jobs:
           asset_name: dockerboards.zip
           asset_content_type: application/zip
   
-  build-win:
+  prepare-win:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +68,21 @@ jobs:
 
       - name: Package Application
         run: npm run package
+      
+      - name: Stash artifact
+        uses: actions/upload.artifact@v4
+        with:
+          name: dockerboard-win32-x64
+          path: "./dockerboard-win32-x64"
 
+  build-win:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Unstash artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dockerboard-win32-x64
+          
       - name: compress artifact
         id: compress
         uses: alvarogarciapiz/Actions/compress-files@main
