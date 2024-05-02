@@ -1,0 +1,46 @@
+name: release-electron
+on:
+  workflow_call:
+    inputs:
+      VERSION:
+        required: true
+        type: string
+        description: 'Application version'
+    secrets:
+      GH_TOKEN:
+        description: 'The GitHub token to use for deployment'
+        required: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node-version: [21.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Package Application
+        run: npm run package
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dockerboard-${{ inputs.VERSION }}-${{ matrix.os }}
+          path: |
+            ./dist/*.exe
+            ./dist/*.deb
+            ./dist/*.dmg
