@@ -48,12 +48,17 @@ jobs:
           NAME: "dockerboard_app_macOS_${{ inputs.VERSION }}"
           COMPRESSION: "zip"
 
+      - name: DEBUG
+        run: |
+          echo ${{ steps.compress.outputs.FILE_PATH }}
+          echo ${{ steps.compress.outputs.FILE_NAME }}
+
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ${{ steps.compress.outputs.FILE_PATH }}
           asset_name: dockerboards.app
           asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
