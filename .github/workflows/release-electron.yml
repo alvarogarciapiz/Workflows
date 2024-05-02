@@ -91,7 +91,7 @@ jobs:
         id: compress
         uses: alvarogarciapiz/Actions/compress-files@main
         with:
-          ORIGIN_PATH: "./dockerboard-win32-x64"
+          ORIGIN_PATH: "."
           NAME: "dockerboard_app_win_${{ inputs.VERSION }}"
           COMPRESSION: "zip"
 
